@@ -1,33 +1,20 @@
 <script>
-    export default {
-        props: {
-            value: {
-                type: String,
-                required: true,
-            },
-            placeholder: {
-                type: String,
-            }
-        },
-        methods: {
-            emitInput(event) {
-                this.$emit('input', event.target.value)
-            }
-        }
-    }
+export default {
+   
+}
 </script>
 
 <template>
-    <div class="ui-input">
-        <input type="text" :value="value" @input="emitInput" :placeholder="placeholder">
+    <div class="ui-voting-user-field">
+        <div class="username"></div>
         <div class="icon">
             <slot name="icon"></slot>
         </div>   
-    </div>   
+    </div>    
 </template>
 
 <style scoped>
-    input{
+    .ui-voting-user-field {
         width: 290px;
         height: 50px;
         padding-left: 15px;
@@ -42,17 +29,14 @@
         display: flex;
         align-items: center;
         text-overflow: ellipsis;
-    }
-
-    .ui-input {
-        display: inline-block;
         position: relative;
+        padding-left: 35px;
+        box-sizing: border-box;
     }
 
     .icon {
         position: absolute;
         top: 12px;
-        right: 18px;
+        left: 10px;
     }
-
 </style>

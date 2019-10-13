@@ -2,7 +2,7 @@
     export default {
      
     props: {
-        condition: {
+        state: {
             type: String,
             default: 'solid',
             validator(value){
@@ -15,7 +15,7 @@
 </script>
 
 <template>
-    <button class="button" :class="'_type-' + condition">
+    <button class="button" :class="'_type-' + state">
         <slot></slot>
     </button>
 </template>

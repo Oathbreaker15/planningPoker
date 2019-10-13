@@ -1,9 +1,22 @@
 <script>
 export default {
+    props: {
+        imgPath: {
+            type: String,
+        }
+    }
 
 }
 </script>
 
 <template>
-    <a><img class="link" src="../imgs/Vector.svg"></a>
+    <img class="link" :src="imgPath">
 </template>
+
+<style scoped>
+
+</style>
+
+// одна большая проблема пиздец, в общем задумывал сделать иконку опциональной, 
+// чтобы можно было подставить различные иконки через src, но не судьба ебать
+// хотя мне и кажется что я мыслю в правильном направлении, реализовано пока криво, оставил на потом

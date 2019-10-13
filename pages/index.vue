@@ -1,10 +1,10 @@
 <template>
   <div>
-    <UiButton condition="solid">Начать голосование</UiButton><br>
-    <UiButton condition="solid">Проголосовать</UiButton><br>
-    <UiButton condition="solid">Завершить</UiButton><br>
-    <UiButton condition="solid">Оценить другую</UiButton><br>
-    <UiButton condition="bordered">Переоценить эту</UiButton><br>
+    <UiButton state="solid">Начать голосование</UiButton><br>
+    <UiButton state="solid">Проголосовать</UiButton><br>
+    <UiButton state="solid">Завершить</UiButton><br>
+    <UiButton state="solid">Оценить другую</UiButton><br>
+    <UiButton state="bordered">Переоценить эту</UiButton><br>
     
     <UiField v-slot:ui-input>
       <UiLabel>Как зовут?</UiLabel>
@@ -18,7 +18,7 @@
     
     <UiField v-slot:ui-input>
       <UiInput value="1" placeholder="https://www.figma.com/etertrretreetrerteret" v-slot:icon>
-        <UiIcon></UiIcon>
+        <UiIcon src="thinkingSvg"></UiIcon>
       </UiInput>
     </UiField>
     <br>
@@ -33,6 +33,25 @@
     
     <VoteField></VoteField>
 
+    <p>Участники голосуют</p>
+    
+    <VotingUser v-slot:icon>
+      <UiIcon src="thinkingSvg"></UiIcon>
+      Константин
+    </VotingUser>
+
+    <VotingUser v-slot:icon>
+      <UiIcon src="thinkingSvg"></UiIcon>
+      Ilon Maks
+    </VotingUser>
+
+    <VotingUser v-slot:icon>
+      <UiIcon src="thinkingSvg"></UiIcon>
+      Данил
+    </VotingUser>
+
+    <VotingResults></VotingResults>
+
   </div>
 </template>
 
@@ -43,6 +62,8 @@ import UiInput from '~/components/UiInput.vue'
 import UiLabel from '~/components/UiLabel.vue'
 import UiIcon from '~/components/UiIcon.vue'
 import VoteField from '~/components/VoteField.vue'
+import VotingUser from '~/components/VotingUser.vue'
+import VotingResults from '~/components/VotingResults.vue'
 
 export default {
   components: {
@@ -52,11 +73,15 @@ export default {
     UiLabel,
     UiIcon,
     VoteField,
+    VotingUser,
+    VotingResults
   },
   data() {
     return {
       inputNameValue:'',
       inputTaskValue:'',
+      vectorSvg: '../imgs/Vector.svg',
+      thinkingSvg: '../imgs/thinking.svg', 
     };
   },
 }
