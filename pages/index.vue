@@ -18,7 +18,7 @@
     
     <UiField v-slot:ui-input>
       <UiInput value="1" placeholder="https://www.figma.com/etertrretreetrerteret" v-slot:icon>
-        <UiIcon src="thinkingSvg"></UiIcon>
+        <UiIcon :src="require(`assets/img/copy.svg`)"></UiIcon>
       </UiInput>
     </UiField>
     <br>
@@ -35,19 +35,19 @@
 
     <p>Участники голосуют</p>
     
-    <VotingUser v-slot:icon>
-      <UiIcon src="thinkingSvg"></UiIcon>
-      Константин
+    <VotingUser>
+      <UiIcon :src="require(`assets/img/thinking.svg`)" slot="icon"></UiIcon>
+      <div slot="username">Константин</div> 
     </VotingUser>
 
-    <VotingUser v-slot:icon>
-      <UiIcon src="thinkingSvg"></UiIcon>
-      Ilon Maks
+    <VotingUser>
+      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
+       <div slot="username">Ilon Maks</div> 
     </VotingUser>
 
-    <VotingUser v-slot:icon>
-      <UiIcon src="thinkingSvg"></UiIcon>
-      Данил
+    <VotingUser>
+      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
+      <div slot="username">Данил</div> 
     </VotingUser>
 
     <VotingResults></VotingResults>
