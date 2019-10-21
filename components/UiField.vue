@@ -21,7 +21,6 @@ export default {
 
 <style scoped>
     .label {
-        margin-bottom: 5px;
         font-family: Roboto;
         font-style: normal;
         font-weight: normal;

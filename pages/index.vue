@@ -1,57 +1,28 @@
 <template>
-  <div>
-    <UiButton state="solid">Начать голосование</UiButton><br>
-    <UiButton state="solid">Проголосовать</UiButton><br>
-    <UiButton state="solid">Завершить</UiButton><br>
-    <UiButton state="solid">Оценить другую</UiButton><br>
-    <UiButton state="bordered">Переоценить эту</UiButton><br>
-    
-    <UiField v-slot:ui-input>
-      <UiLabel>Как зовут?</UiLabel>
-      <UiInput v-model="inputNameValue" placeholder="Лаврентий" v-slot:label></UiInput>
+  <div class="app">  
+    <UiField>
+      <template v-slot:label>
+        <UiLabel class="ui-label">Как зовут?</UiLabel>
+      </template>
+      <template v-slot:ui-input>
+        <UiInput v-model="inputNameValue" placeholder="Лаврентий" class="ui-input"></UiInput>
+      </template>
     </UiField>
     
-    <UiField v-slot:ui-input>
-      <UiLabel>Что оцениваем?</UiLabel>
-      <UiInput v-model="inputTaskValue" placeholder="Сложная задачка" v-slot:label></UiInput>
-    </UiField><br>
-    
-    <UiField v-slot:ui-input>
-      <UiInput value="1" placeholder="https://www.figma.com/etertrretreetrerteret" v-slot:icon>
-        <UiIcon :src="require(`assets/img/copy.svg`)"></UiIcon>
-      </UiInput>
+    <UiField>
+      <template v-slot:label>
+        <UiLabel class="ui-label">Что оцениваем?</UiLabel>
+      </template>
+      <template v-slot:ui-input>
+        <UiInput v-model="inputTaskValue" placeholder="Сложная задачка" class="ui-input"></UiInput> 
+      </template>
     </UiField>
-    <br>
-    
-    <div>
-      Значение инпута Имя: {{ inputNameValue }}
-    </div> 
-    
-    <div>
-      Значение инпута Задачи: {{ inputTaskValue }}
-    </div> 
-    
-    <VoteField></VoteField>
 
-    <p>Участники голосуют</p>
-    
-    <VotingUser>
-      <UiIcon :src="require(`assets/img/thinking.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Константин</div> 
-    </VotingUser>
+    <nuxt-link to="/voting">
+      <UiButton state="solid" class="ui-button">Начать голосование</UiButton>
+    </nuxt-link>
 
-    <VotingUser>
-      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
-       <div slot="username">Ilon Maks</div> 
-    </VotingUser>
-
-    <VotingUser>
-      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Данил</div> 
-    </VotingUser>
-
-    <VotingResults></VotingResults>
-
+      
   </div>
 </template>
 
@@ -60,10 +31,6 @@ import UiField from '~/components/UiField.vue'
 import UiButton from '~/components/UiButton.vue'
 import UiInput from '~/components/UiInput.vue'
 import UiLabel from '~/components/UiLabel.vue'
-import UiIcon from '~/components/UiIcon.vue'
-import VoteField from '~/components/VoteField.vue'
-import VotingUser from '~/components/VotingUser.vue'
-import VotingResults from '~/components/VotingResults.vue'
 
 export default {
   components: {
@@ -71,19 +38,33 @@ export default {
     UiButton,
     UiInput,
     UiLabel,
-    UiIcon,
-    VoteField,
-    VotingUser,
-    VotingResults
   },
   data() {
     return {
-      inputNameValue:'',
-      inputTaskValue:'',
-      vectorSvg: '../imgs/Vector.svg',
-      thinkingSvg: '../imgs/thinking.svg', 
+
     };
   },
 }
 </script>
 
+<style scoped>
+
+  .app{
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .ui-label{
+    padding: 20px 15px 5px 15px;
+  }
+
+  .ui-input{
+    padding: 0px 15px;
+  }
+
+  .button{
+    margin: 20px 15px
+  }
+
+</style>

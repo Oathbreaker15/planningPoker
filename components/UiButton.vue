@@ -34,6 +34,7 @@
         text-align: сenter;
         vertical-align: center;
         box-sizing: border-box;
+        /* padding: 20px 15px; */
     }
 
     .button._type-solid {

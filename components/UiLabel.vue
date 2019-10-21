@@ -15,8 +15,7 @@ export default {
 </template>
 
 <style scoped>
-    .label{
-        margin-bottom: 5px;
+    /* .label{
         font-family: Roboto;
         font-style: normal;
         font-weight: normal;
@@ -25,5 +24,6 @@ export default {
         display: flex;
         align-items: center;
         color: #000000;
-    }
+        margin: 0;
+    } */
 </style>
