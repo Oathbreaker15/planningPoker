@@ -1,21 +1,21 @@
 <script>
 export default {
-    props: {
-        value: {
-            type: String,
-        }
+  props: {
+    value: {
+      type: String
     }
-}
+  }
+};
 </script>
-    
+
 <template>
-    <label class="label">
-        <slot></slot>
-    </label>
+  <label class="label">
+    <slot></slot>
+  </label>
 </template>
 
 <style scoped>
-    /* .label{
+/* .label{
         font-family: Roboto;
         font-style: normal;
         font-weight: normal;
