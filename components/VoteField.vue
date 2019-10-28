@@ -40,7 +40,8 @@ export default {
         align-items: center;
         flex-wrap: wrap;
         align-content: stretch;
-        text-align: center;     
+        text-align: center;  
+         
     }
 
     .ui-numbers-field-inner {
@@ -50,8 +51,8 @@ export default {
         border: 2px solid #6AC259;
         box-sizing: border-box;
         border-radius: 100%;
-        position: relative;
-        
+        position: relative; 
+        cursor: pointer;  
     }
 
     .ui-numbers-field-inner:nth-child(3n){
@@ -66,9 +67,8 @@ export default {
         font-size: 32px;
         line-height: 32px;
         vertical-align: top;
-
     }
-    .active {
+    .ui-numbers-field-inner:hover {
         background-color: #6AC259;
         color: #fff;
     }

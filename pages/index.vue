@@ -5,7 +5,7 @@
         <UiLabel class="ui-label">Как зовут?</UiLabel>
       </template>
       <template v-slot:ui-input>
-        <UiInput v-model="inputNameValue" placeholder="Лаврентий" class="ui-input"></UiInput>
+        <UiInput value="" placeholder="Лаврентий" class="ui-input"></UiInput>
       </template>
     </UiField>
     
@@ -14,7 +14,7 @@
         <UiLabel class="ui-label">Что оцениваем?</UiLabel>
       </template>
       <template v-slot:ui-input>
-        <UiInput v-model="inputTaskValue" placeholder="Сложная задачка" class="ui-input"></UiInput> 
+        <UiInput value="" placeholder="Сложная задачка" class="ui-input"></UiInput> 
       </template>
     </UiField>
 

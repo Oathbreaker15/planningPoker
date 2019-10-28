@@ -46,7 +46,6 @@
 import UiField from '~/components/UiField.vue'
 import UiButton from '~/components/UiButton.vue'
 import UiInput from '~/components/UiInput.vue'
-import UiLabel from '~/components/UiLabel.vue'
 import UiIcon from '~/components/UiIcon.vue'
 import VoteField from '~/components/VoteField.vue'
 import VotingUser from '~/components/VotingUser.vue'
@@ -57,7 +56,6 @@ export default {
     UiField,
     UiButton,
     UiInput,
-    UiLabel,
     UiIcon,
     VoteField,
     VotingUser,
@@ -68,6 +66,11 @@ export default {
 
     };
   },
+  methods: {
+  onMouseOver: function () {
+  
+  }
+}
 }
 </script>
 
