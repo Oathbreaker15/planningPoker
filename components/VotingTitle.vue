@@ -1,16 +1,35 @@
 <script>
-export default {};
+export default {
+  props: {
+    title: {
+      type: String
+    }
+  }
+};
 </script>
 
 <template>
   <div class="voting-title">
-    Сложная задачка
-    <slot class="icon" name="icon"></slot>
+    <div class="voting-name">
+      <slot name="voting-name">{{ title }}</slot>
+    </div>
+
+    <div class="icon">
+      <slot name="icon"></slot>
+    </div>
   </div>
 </template>
 
+//
+<div class="voting-title">
+//     <div>{{ title }}</div>
+//     <slot class="icon" name="icon"></slot>
+// </div>
+
 <style scoped>
 .voting-title {
+  display: flex;
+  width: 290px;
   padding-left: 15px;
   padding-right: 45px;
   font-family: Roboto;
@@ -22,8 +41,8 @@ export default {};
 }
 
 .icon {
-  position: absolute;
-  top: 12px;
-  right: 18px;
+  width: 15px;
+  height: 15px;
+  margin-left: 10px;
 }
 </style>

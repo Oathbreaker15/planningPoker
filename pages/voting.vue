@@ -15,34 +15,46 @@
       </template>
     </UiField>
 
-    <VotingTitle>
+    <VotingTitle :title="$store.state.taskname">
       <template v-slot:icon>
-        <a href=""><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon></a>
+        <a href="" @click.prevent=""
+          ><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon
+        ></a>
       </template>
     </VotingTitle>
 
-    <VoteField class="vote-field"></VoteField>
+    <VoteField
+      class="vote-field"
+      :values="values"
+      :activeValue="showVote"
+      @click.native="
+        setVote(takeValue());
+        changeCurrentUserVote();
+      "
+    ></VoteField>
 
     <p class="helping-text">Участники голосуют</p>
 
-    <VotingUser class="voting-user">
+    <VotingUser
+      class="voting-user"
+      v-for="user in $store.state.users"
+      :key="user.username"
+    >
       <UiIcon :src="require(`assets/img/thinking.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Константин</div>
-    </VotingUser>
-
-    <VotingUser class="voting-user">
-      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Ilon Maks</div>
-    </VotingUser>
-
-    <VotingUser class="voting-user">
-      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Данил</div>
+      <template v-slot:username>
+        <div>{{ user.username }}</div>
+      </template>
     </VotingUser>
 
     <nuxt-link to="/results">
       <UiButton state="solid">Завершить</UiButton>
     </nuxt-link>
+
+    <div>{{ showUsers }}</div>
+    <div>{{ showUsername }}</div>
+    <div>{{ showVote }}</div>
+    <div :bind="takeValue">{{ currentValue }}</div>
+    <div>{{ showTempVote }}</div>
   </div>
 </template>
 
@@ -66,10 +78,43 @@ export default {
     VotingTitle
   },
   data() {
-    return {};
+    return {
+      values: [1, 2, 3, 5, 8, 13],
+      currentValue: 0
+    };
+  },
+  computed: {
+    showUsers() {
+      return this.$store.getters.showUsers(0);
+    },
+    showUsername() {
+      return this.$store.state.username;
+    },
+    showVote() {
+      return this.$store.getters.showVote.vote;
+    },
+    showTempVote() {
+      return this.$store.vote;
+    }
   },
   methods: {
-    onMouseOver: function() {}
+    setVote(vote) {
+      this.$store.commit("setVote", vote);
+    },
+    takeValue() {
+      if (
+        isNaN(parseInt(event.target.innerHTML)) ||
+        parseInt(event.target.innerHTML) === this.showVote
+      ) {
+        this.currentValue = 0;
+      } else {
+        this.currentValue = parseInt(event.target.innerHTML);
+      }
+      return this.currentValue;
+    },
+    changeCurrentUserVote() {
+      this.$store.dispatch("changeCurrentUserVote");
+    }
   }
 };
 </script>

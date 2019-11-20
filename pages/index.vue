@@ -5,7 +5,12 @@
         <UiLabel class="ui-label">Как зовут?</UiLabel>
       </template>
       <template v-slot:ui-input>
-        <UiInput value="" placeholder="Лаврентий" class="ui-input"></UiInput>
+        <UiInput
+          :value="username"
+          placeholder="Лаврентий"
+          class="ui-input"
+          @input="setUsername($event)"
+        ></UiInput>
       </template>
     </UiField>
 
@@ -15,15 +20,18 @@
       </template>
       <template v-slot:ui-input>
         <UiInput
-          value=""
+          :value="taskname"
           placeholder="Сложная задачка"
           class="ui-input"
+          @input="setTaskname($event)"
         ></UiInput>
       </template>
     </UiField>
 
     <nuxt-link to="/voting">
-      <UiButton state="solid" class="ui-button">Начать голосование</UiButton>
+      <UiButton state="solid" class="ui-button" @click.native="addUser"
+        >Начать голосование</UiButton
+      >
     </nuxt-link>
   </div>
 </template>
@@ -33,6 +41,7 @@ import UiField from "~/components/UiField.vue";
 import UiButton from "~/components/UiButton.vue";
 import UiInput from "~/components/UiInput.vue";
 import UiLabel from "~/components/UiLabel.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -42,7 +51,23 @@ export default {
     UiLabel
   },
   data() {
-    return {};
+    return {
+      me: "me"
+    };
+  },
+  computed: {
+    ...mapState(["users", "username", "taskname"])
+  },
+  methods: {
+    setUsername(value) {
+      this.$store.commit("setUsername", value);
+    },
+    setTaskname(value) {
+      this.$store.commit("setTaskname", value);
+    },
+    addUser() {
+      this.$store.commit("addUserFromForm");
+    }
   }
 };
 </script>

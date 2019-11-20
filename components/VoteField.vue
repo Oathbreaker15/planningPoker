@@ -1,30 +1,31 @@
 <script>
 export default {
   props: {
-    type: String
+    values: {
+      type: Array
+    },
+    activeValue: {
+      type: Number
+    }
+  },
+  methods: {
+    emitInput(payload) {
+      this.$emit("input", payload);
+    }
   }
 };
 </script>
 
 <template>
   <div class="ui-numbers-field">
-    <div class="ui-numbers-field-inner">
-      <div class="vote-value">1</div>
-    </div>
-    <div class="ui-numbers-field-inner">
-      <div class="vote-value">2</div>
-    </div>
-    <div class="ui-numbers-field-inner">
-      <div class="vote-value">3</div>
-    </div>
-    <div class="ui-numbers-field-inner">
-      <div class="vote-value">5</div>
-    </div>
-    <div class="ui-numbers-field-inner active">
-      <div class="vote-value">8</div>
-    </div>
-    <div class="ui-numbers-field-inner">
-      <div class="vote-value">13</div>
+    <div
+      class="ui-numbers-field-inner"
+      v-for="value in values"
+      :key="value"
+      :class="{ active: activeValue === value }"
+      @click="emitInput(value)"
+    >
+      <div class="vote-value">{{ value }}</div>
     </div>
   </div>
 </template>
@@ -59,15 +60,18 @@ export default {
 }
 
 .vote-value {
+  width: 100%;
+  height: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 32px;
-  line-height: 32px;
+  line-height: 68px;
   vertical-align: top;
 }
-.ui-numbers-field-inner:hover {
+.ui-numbers-field-inner:hover,
+.active {
   background-color: #6ac259;
   color: #fff;
 }

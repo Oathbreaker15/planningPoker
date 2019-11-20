@@ -15,7 +15,7 @@
       </template>
     </UiField>
 
-    <VotingTitle>
+    <VotingTitle :title="$store.state.taskname">
       <template v-slot:icon>
         <a href=""><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon></a>
       </template>
@@ -25,19 +25,13 @@
 
     <p class="helping-text">Участники голосуют</p>
 
-    <VotingUser class="voting-user">
+    <VotingUser
+      class="voting-user"
+      v-for="user in $store.state.users"
+      :key="user.username"
+    >
       <UiIcon :src="require(`assets/img/thinking.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Константин</div>
-    </VotingUser>
-
-    <VotingUser class="voting-user">
-      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Ilon Maks</div>
-    </VotingUser>
-
-    <VotingUser class="voting-user">
-      <UiIcon :src="require(`assets/img/done.svg`)" slot="icon"></UiIcon>
-      <div slot="username">Данил</div>
+      <div slot="username">{{ user.username }}</div>
     </VotingUser>
 
     <nuxt-link to="/voting">
