@@ -25,9 +25,6 @@ export default {
       @input="emitInput"
       :placeholder="placeholder"
     />
-    <div class="icon">
-      <slot name="icon"></slot>
-    </div>
   </div>
 </template>
 
@@ -54,9 +51,7 @@ input {
   position: relative;
 }
 
-.icon {
-  position: absolute;
-  top: 12px;
-  right: 18px;
+._type-error {
+  border: 1px solid red;
 }
 </style>

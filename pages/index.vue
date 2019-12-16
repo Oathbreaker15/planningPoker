@@ -4,13 +4,27 @@
       <template v-slot:label>
         <UiLabel class="ui-label">Как зовут?</UiLabel>
       </template>
+
       <template v-slot:ui-input>
         <UiInput
           :value="username"
           placeholder="Лаврентий"
           class="ui-input"
-          @input="setUsername($event)"
+          @input="
+            setUsername($event);
+            usernameValidationHandler();
+          "
         ></UiInput>
+      </template>
+
+      <template v-slot:ui-icon>
+        <transition name="slide-fade">
+          <UiIcon
+            v-if="checkUsername"
+            class="ui-icon"
+            :src="errorIcon()"
+          ></UiIcon>
+        </transition>
       </template>
     </UiField>
 
@@ -18,13 +32,28 @@
       <template v-slot:label>
         <UiLabel class="ui-label">Что оцениваем?</UiLabel>
       </template>
+
       <template v-slot:ui-input>
         <UiInput
           :value="taskname"
           placeholder="Сложная задачка"
           class="ui-input"
-          @input="setTaskname($event)"
-        ></UiInput>
+          @input="
+            setTaskname($event);
+            tasknameValidationHandler();
+          "
+        >
+        </UiInput>
+      </template>
+
+      <template v-slot:ui-icon>
+        <transition name="slide-fade">
+          <UiIcon
+            v-if="checkTaskname"
+            class="ui-icon"
+            :src="errorIcon()"
+          ></UiIcon>
+        </transition>
       </template>
     </UiField>
 
@@ -41,18 +70,25 @@ import UiField from "~/components/UiField.vue";
 import UiButton from "~/components/UiButton.vue";
 import UiInput from "~/components/UiInput.vue";
 import UiLabel from "~/components/UiLabel.vue";
+import UiIcon from "~/components/UiIcon.vue";
 import { mapState } from "vuex";
+import Vue from "vue";
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
 
 export default {
   components: {
     UiField,
     UiButton,
     UiInput,
-    UiLabel
+    UiLabel,
+    UiIcon
   },
   data() {
     return {
-      me: "me"
+      iconError: require(`assets/img/error.svg`),
+      checkUsername: false,
+      checkTaskname: false
     };
   },
   computed: {
@@ -66,7 +102,33 @@ export default {
       this.$store.commit("setTaskname", value);
     },
     addUser() {
-      this.$store.commit("addUserFromForm");
+      if (
+        this.$store.state.username === "" ||
+        this.$store.state.taskname === ""
+      ) {
+        this.usernameValidationHandler();
+        this.tasknameValidationHandler();
+        return event.preventDefault();
+      } else {
+        this.$store.commit("addUserFromForm");
+      }
+    },
+    usernameValidationHandler() {
+      if (this.$store.state.username === "") {
+        return (this.checkUsername = true);
+      } else {
+        return (this.checkUsername = false);
+      }
+    },
+    tasknameValidationHandler() {
+      if (this.$store.state.taskname === "") {
+        return (this.checkTaskname = true);
+      } else {
+        return (this.checkTaskname = false);
+      }
+    },
+    errorIcon() {
+      return this.iconError;
     }
   }
 };
@@ -89,5 +151,23 @@ export default {
 
 .button {
   margin: 20px 15px;
+}
+
+.ui-icon {
+  position: absolute;
+  top: -92px;
+  left: 0px;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

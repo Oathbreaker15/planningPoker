@@ -1,36 +1,42 @@
 <template>
-  <div>
+  <div class="app">
     <UiField class="ui-field">
       <template v-slot:ui-input>
         <UiInput
           value="1"
           placeholder="https://www.figma.com/etertrretreetrerteret"
         >
-          <template v-slot:icon>
-            <a href=""
-              ><UiIcon :src="require(`assets/img/copy.svg`)"></UiIcon
-            ></a>
-          </template>
         </UiInput>
+      </template>
+      <template v-slot:ui-icon>
+        <a href="" class="copy-icon" @click.prevent=""
+          ><UiIcon :src="setIcon(iconCopy)"></UiIcon
+        ></a>
       </template>
     </UiField>
 
-    <VotingTitle :title="$store.state.taskname">
+    <VotingTitle v-if="tasknameToggle" :title="$store.state.taskname">
       <template v-slot:icon>
-        <a href="" @click.prevent=""
-          ><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon
+        <a href="" @click="changeTasknameToggle"
+          ><UiIcon :src="setIcon(iconEdit)"></UiIcon
         ></a>
       </template>
     </VotingTitle>
 
+    <UiInput
+      v-else
+      :value="taskname"
+      placeholder="Сложная задачка"
+      class="ui-input"
+      @input="setTaskname($event)"
+    >
+    </UiInput>
+
     <VoteField
       class="vote-field"
       :values="values"
-      :activeValue="showVote"
-      @click.native="
-        setVote(takeValue());
-        changeCurrentUserVote();
-      "
+      :activeValue="currentUser.vote"
+      @input="changeCurrentUserVote"
     ></VoteField>
 
     <p class="helping-text">Участники голосуют</p>
@@ -40,7 +46,10 @@
       v-for="user in $store.state.users"
       :key="user.username"
     >
-      <UiIcon :src="require(`assets/img/thinking.svg`)" slot="icon"></UiIcon>
+      <template v-slot:icon>
+        <UiIcon state="icon" :src="userIcon(user.vote)" slot="icon"></UiIcon>
+      </template>
+
       <template v-slot:username>
         <div>{{ user.username }}</div>
       </template>
@@ -49,12 +58,6 @@
     <nuxt-link to="/results">
       <UiButton state="solid">Завершить</UiButton>
     </nuxt-link>
-
-    <div>{{ showUsers }}</div>
-    <div>{{ showUsername }}</div>
-    <div>{{ showVote }}</div>
-    <div :bind="takeValue">{{ currentValue }}</div>
-    <div>{{ showTempVote }}</div>
   </div>
 </template>
 
@@ -79,41 +82,39 @@ export default {
   },
   data() {
     return {
+      tasknameToggle: true,
       values: [1, 2, 3, 5, 8, 13],
-      currentValue: 0
+      iconThink: require(`assets/img/thinking.svg`),
+      iconReady: require(`assets/img/done.svg`),
+      iconCopy: require(`assets/img/copy.svg`),
+      iconEdit: require(`assets/img/edit.svg`)
     };
   },
   computed: {
-    showUsers() {
-      return this.$store.getters.showUsers(0);
-    },
-    showUsername() {
-      return this.$store.state.username;
-    },
-    showVote() {
-      return this.$store.getters.showVote.vote;
-    },
-    showTempVote() {
-      return this.$store.vote;
+    currentUser() {
+      return this.$store.getters.currentUser;
     }
   },
   methods: {
-    setVote(vote) {
-      this.$store.commit("setVote", vote);
+    // могут возвращать и работать с аргументами
+    changeTasknameToggle() {
+      this.tasknameToggle = !this.tasknameToggle;
     },
-    takeValue() {
-      if (
-        isNaN(parseInt(event.target.innerHTML)) ||
-        parseInt(event.target.innerHTML) === this.showVote
-      ) {
-        this.currentValue = 0;
+    setTaskname(value) {
+      this.$store.commit("setTaskname", value);
+    },
+    changeCurrentUserVote(value) {
+      this.$store.commit("changeCurrentUserVote", value);
+    },
+    userIcon(value) {
+      if (value === 0) {
+        return this.iconThink;
       } else {
-        this.currentValue = parseInt(event.target.innerHTML);
+        return this.iconReady;
       }
-      return this.currentValue;
     },
-    changeCurrentUserVote() {
-      this.$store.dispatch("changeCurrentUserVote");
+    setIcon(value) {
+      return value;
     }
   }
 };
@@ -122,6 +123,12 @@ export default {
 <style scoped>
 .ui-field {
   padding: 20px 15px;
+}
+
+.copy-icon {
+  position: absolute;
+  top: -89px;
+  left: 0px;
 }
 
 .voting-user,

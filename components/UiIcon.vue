@@ -2,7 +2,7 @@
 export default {
   props: {
     imgPath: {
-      type: String
+      type: Function
     }
   }
 };

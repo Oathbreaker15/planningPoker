@@ -15,7 +15,8 @@ module.exports = {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css?family=Roboto"
       }
-    ]
+    ],
+    plugins: [{ src: "~/plugins/Vuelidate" }]
   },
   /*
    ** Customize the progress bar color

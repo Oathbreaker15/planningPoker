@@ -6,7 +6,9 @@ export default {};
   <div class="summary__outer">
     <div class="summary">
       <div class="summary__inner">
-        <div class="vote-value">11</div>
+        <div class="summary-vote-value">
+          <slot name="summary-vote-value"></slot>
+        </div>
         <div class="average">Средняя</div>
       </div>
     </div>
@@ -39,7 +41,7 @@ export default {};
   transform: translate(-50%, -50%);
 }
 
-.vote-value {
+.summary-vote-value {
   font-size: 64px;
   line-height: 64px;
 }

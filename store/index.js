@@ -8,8 +8,7 @@ const store = () =>
     state: {
       users: [],
       username: "",
-      taskname: "",
-      userVote: ""
+      taskname: ""
     },
     mutations: {
       setUsername(state, value) {
@@ -18,30 +17,46 @@ const store = () =>
       setTaskname(state, value) {
         state.taskname = value;
       },
-      setVote(state, vote) {
-        state.userVote = vote;
-      },
       addUser(state, name) {
-        state.users.push({ username: name, vote: 1 });
+        state.users.push({ username: name, vote: 0 });
         // Vue.set(state.users, 0, name);
       },
       addUserFromForm(state) {
         const name = state.username;
-        state.users.push({ username: name, vote: 1 });
+        state.users.push({ username: name, vote: 0 });
       },
-      changeCurrentUserVote(state) {
-        const name = state.username;
-        const vote = state.userVote;
-        Vue.set(state.users, 0, { username: name, vote: vote });
+      changeCurrentUserVote(state, value) {
+        const currentUserIndex = state.users.findIndex(
+          user => user.username == state.username
+        );
+
+        if (
+          state.users[currentUserIndex].vote === 0 ||
+          state.users[currentUserIndex].vote !== value
+        ) {
+          Vue.set(state.users[currentUserIndex], "vote", value);
+        } else {
+          Vue.set(state.users[currentUserIndex], "vote", 0);
+        }
       }
     },
     getters: {
-      showUsers: state => index => {
-        return state.users[index];
+      currentUser: state => {
+        const currentUser = state.users.find(
+          user => user.username == state.username
+        );
+        return currentUser;
       },
-      showVote: state => {
-        const result = state.users[0];
-        return result;
+      usersWhoVote: state => {
+        const usersWhoVote = state.users.filter(user => user.vote > 0);
+        return usersWhoVote;
+      },
+      averageVoteValue: state => {
+        const users = state.users;
+        return users.reduce((a, b) => ({ vote: a.vote + b.vote }));
+      },
+      allUsers: state => {
+        return state.users;
       }
     },
     actions: {
@@ -51,9 +66,6 @@ const store = () =>
     }
   });
 
-// 1. Иметь возможность достать объект юзера из массива users
-// (создать геттер в store, который возвращает объект моего юзера)
-// 2. Обновление голосования (использовать голос из объекта)
-// 3. Изменять значение (создать экшн changeCurrentUserVote, через vue.set обновить поле vote и пользователя)
+// 3. Сделать среднее значение
 
 export default store;

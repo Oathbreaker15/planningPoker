@@ -21,7 +21,11 @@
       </template>
     </VotingTitle>
 
-    <VotingResults class="vote-field"></VotingResults>
+    <VotingResults class="vote-field">
+      <template v-slot:summary-vote-value>
+        {{ (averageVoteValue.vote / usersWhoVote.length).toFixed(0) }}
+      </template>
+    </VotingResults>
 
     <p class="helping-text">Участники голосуют</p>
 
@@ -30,7 +34,15 @@
       v-for="user in $store.state.users"
       :key="user.username"
     >
-      <UiIcon :src="require(`assets/img/thinking.svg`)" slot="icon"></UiIcon>
+      <template v-if="user.vote > 0" v-slot:vote>
+        <div class="vote-block" state="vote">
+          <span class="vote-value">{{ user.vote }}</span>
+        </div>
+      </template>
+      <template v-else v-slot:icon>
+        <UiIcon state="icon" :src="require(`assets/img/thinking.svg`)"></UiIcon>
+      </template>
+
       <div slot="username">{{ user.username }}</div>
     </VotingUser>
 
@@ -65,6 +77,17 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    allUsers() {
+      return this.$store.getters.allUsers;
+    },
+    averageVoteValue() {
+      return this.$store.getters.averageVoteValue;
+    },
+    usersWhoVote() {
+      return this.$store.getters.usersWhoVote;
+    }
   }
 };
 </script>
@@ -82,5 +105,24 @@ export default {
 
 .vote-field {
   margin: 20px 15px;
+}
+
+.vote-block {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  width: 38px;
+  height: 38px;
+  background-color: #6ac259;
+  color: #fff;
+  border-radius: 100%;
+}
+
+.vote-value {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

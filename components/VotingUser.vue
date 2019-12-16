@@ -1,11 +1,24 @@
 <script>
-export default {};
+export default {
+  props: {
+    state: {
+      type: String,
+      default: "icon",
+      validator(value) {
+        return ["icon", "vote"].includes(value);
+      }
+    }
+  }
+};
 </script>
 
 <template>
   <div class="ui-voting-user-field">
-    <div class="icon">
+    <div class="icon" :class="'_type-' + state">
       <slot name="icon"></slot>
+    </div>
+    <div class="vote" :class="'_type-' + state">
+      <slot name="vote"></slot>
     </div>
     <div class="username">
       <slot name="username"></slot>
@@ -34,9 +47,20 @@ export default {};
   left: 45px;
 }
 
-.icon {
+.icon._type-icon {
   position: absolute;
   top: 5px;
   left: 0px;
+}
+
+.vote._type-vote {
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  width: 38px;
+  height: 38px;
+  background-color: #6ac259;
+  color: #fff;
+  border-radius: 100%;
 }
 </style>

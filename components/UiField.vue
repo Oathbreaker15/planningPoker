@@ -16,6 +16,9 @@ export default {
     <div class="ui-input">
       <slot name="ui-input"></slot>
     </div>
+    <div class="ui-icon">
+      <slot name="ui-icon"></slot>
+    </div>
   </div>
 </template>
 
@@ -29,5 +32,18 @@ export default {
   display: flex;
   align-items: center;
   color: #000000;
+}
+
+.ui-icon {
+  width: 0;
+  height: 0;
+  position: relative;
+  top: 50px;
+  left: 250px;
+}
+
+.ui-icon {
+  width: auto;
+  height: auto;
 }
 </style>
