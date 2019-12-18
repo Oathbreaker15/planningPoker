@@ -7,7 +7,7 @@
           placeholder="https://www.figma.com/etertrretreetrerteret"
         >
           <template v-slot:icon>
-            <a href=""
+            <a href="" @click.prevent=""
               ><UiIcon :src="require(`assets/img/copy.svg`)"></UiIcon
             ></a>
           </template>
@@ -17,7 +17,9 @@
 
     <VotingTitle :title="$store.state.taskname">
       <template v-slot:icon>
-        <a href=""><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon></a>
+        <a href="" @click.prevent=""
+          ><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon
+        ></a>
       </template>
     </VotingTitle>
 

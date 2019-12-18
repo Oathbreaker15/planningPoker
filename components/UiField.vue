@@ -19,6 +19,9 @@ export default {
     <div class="ui-icon">
       <slot name="ui-icon"></slot>
     </div>
+    <div class="ui-second-icon">
+      <slot name="ui-second-icon"></slot>
+    </div>
   </div>
 </template>
 
@@ -35,15 +38,16 @@ export default {
 }
 
 .ui-icon {
-  width: 0;
-  height: 0;
+  /* width: 0;
+  height: 0; */
   position: relative;
   top: 50px;
   left: 250px;
 }
 
-.ui-icon {
-  width: auto;
+.ui-icon,
+.ui-second-icon {
+  width: 38px;
   height: auto;
 }
 </style>

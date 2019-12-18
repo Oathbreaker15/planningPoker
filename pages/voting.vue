@@ -15,22 +15,47 @@
       </template>
     </UiField>
 
-    <VotingTitle v-if="tasknameToggle" :title="$store.state.taskname">
+    <VotingTitle
+      v-if="tasknameToggle"
+      :title="$store.state.taskname"
+      class="ui-title"
+    >
       <template v-slot:icon>
-        <a href="" @click="changeTasknameToggle"
+        <a href="" @click.prevent="changeTasknameToggle"
           ><UiIcon :src="setIcon(iconEdit)"></UiIcon
         ></a>
       </template>
     </VotingTitle>
 
-    <UiInput
-      v-else
-      :value="taskname"
-      placeholder="Сложная задачка"
-      class="ui-input"
-      @input="setTaskname($event)"
-    >
-    </UiInput>
+    <template v-else>
+      <UiField class="ui-field">
+        <template v-slot:ui-input>
+          <UiInput
+            :value="taskname"
+            placeholder="Редактировать"
+            class="ui-hidden-input"
+            @input="setTaskname($event)"
+          >
+          </UiInput>
+        </template>
+        <template v-slot:ui-second-icon>
+          <a href="" @click.prevent="restoreTaskname"
+            ><UiIcon
+              class="icon-close-hidden"
+              :src="setIcon(iconClose)"
+            ></UiIcon
+          ></a>
+        </template>
+        <template v-slot:ui-icon>
+          <a
+            href=""
+            class="icon-ok-hidden"
+            @click.prevent="changeTasknameToggle"
+            ><UiIcon :src="setIcon(iconOk)"></UiIcon
+          ></a>
+        </template>
+      </UiField>
+    </template>
 
     <VoteField
       class="vote-field"
@@ -83,11 +108,14 @@ export default {
   data() {
     return {
       tasknameToggle: true,
+      tasknameValue: [],
       values: [1, 2, 3, 5, 8, 13],
       iconThink: require(`assets/img/thinking.svg`),
       iconReady: require(`assets/img/done.svg`),
       iconCopy: require(`assets/img/copy.svg`),
-      iconEdit: require(`assets/img/edit.svg`)
+      iconEdit: require(`assets/img/edit.svg`),
+      iconOk: require(`assets/img/ok.svg`),
+      iconClose: require(`assets/img/close.svg`)
     };
   },
   computed: {
@@ -99,9 +127,26 @@ export default {
     // могут возвращать и работать с аргументами
     changeTasknameToggle() {
       this.tasknameToggle = !this.tasknameToggle;
+      if (this.tasknameToggle === false) {
+        this.tasknameValue.push(this.$store.state.taskname);
+      } else {
+        this.tasknameValue.pop();
+      }
+    },
+    restoreTaskname() {
+      this.setTaskname(this.tasknameValue[0]);
+      this.tasknameValue.pop();
+      this.tasknameToggle = !this.tasknameToggle;
     },
     setTaskname(value) {
       this.$store.commit("setTaskname", value);
+    },
+    tasknameHandler() {
+      if (this.tasknameToggle === true) {
+        this.tasknameValue = this.$store.state.taskname;
+      } else {
+        event.preventDefault();
+      }
     },
     changeCurrentUserVote(value) {
       this.$store.commit("changeCurrentUserVote", value);
@@ -125,10 +170,35 @@ export default {
   padding: 20px 15px;
 }
 
+.ui-title {
+  padding: 0 15px;
+}
+.ui-hidden-input {
+  width: 290px;
+  padding: 0 15px;
+  position: absolute;
+  top: 68px;
+  left: 0;
+}
+
 .copy-icon {
   position: absolute;
   top: -89px;
   left: 0px;
+}
+
+.icon-ok-hidden {
+  position: absolute;
+  top: -84px;
+  left: 0px;
+}
+
+.icon-close-hidden {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 78px;
+  left: 228px;
 }
 
 .voting-user,

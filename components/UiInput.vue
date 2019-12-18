@@ -23,6 +23,7 @@ export default {
       type="text"
       :value="value"
       @input="emitInput"
+      @keyup.enter="emitInput"
       :placeholder="placeholder"
     />
   </div>
