@@ -54,9 +54,6 @@ const store = () =>
       averageVoteValue: state => {
         const users = state.users;
         return users.reduce((a, b) => ({ vote: a.vote + b.vote }));
-      },
-      allUsers: state => {
-        return state.users;
       }
     },
     actions: {

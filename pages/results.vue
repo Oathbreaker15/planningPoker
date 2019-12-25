@@ -3,7 +3,7 @@
     <UiField class="ui-field">
       <template v-slot:ui-input>
         <UiInput
-          value="1"
+          state="regular"
           placeholder="https://www.figma.com/etertrretreetrerteret"
         >
           <template v-slot:icon>

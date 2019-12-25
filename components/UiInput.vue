@@ -2,10 +2,12 @@
 export default {
   props: {
     value: {
-      type: String,
-      required: true
+      type: String
     },
     placeholder: {
+      type: String
+    },
+    state: {
       type: String
     }
   },
@@ -25,12 +27,14 @@ export default {
       @input="emitInput"
       @keyup.enter="emitInput"
       :placeholder="placeholder"
+      :class="'_type-' + state"
     />
   </div>
 </template>
 
 <style scoped>
-input {
+._type-regular,
+._type-mini {
   width: 290px;
   height: 50px;
   padding-left: 15px;
@@ -52,6 +56,9 @@ input {
   position: relative;
 }
 
+._type-mini {
+  padding-right: 85px;
+}
 ._type-error {
   border: 1px solid red;
 }

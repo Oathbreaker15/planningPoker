@@ -20,12 +20,6 @@ export default {
   </div>
 </template>
 
-//
-<div class="voting-title">
-//     <div>{{ title }}</div>
-//     <slot class="icon" name="icon"></slot>
-// </div>
-
 <style scoped>
 .voting-title {
   display: flex;
@@ -38,6 +32,12 @@ export default {
   font-size: 18px;
   line-height: 18px;
   position: relative;
+  word-wrap: break-word;
+}
+
+.voting-title {
+  width: 290px;
+  word-wrap: break-word;
 }
 
 .icon {

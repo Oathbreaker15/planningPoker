@@ -3,7 +3,7 @@
     <UiField class="ui-field">
       <template v-slot:ui-input>
         <UiInput
-          value="1"
+          state="regular"
           placeholder="https://www.figma.com/etertrretreetrerteret"
         >
         </UiInput>
@@ -31,26 +31,24 @@
       <UiField class="ui-field">
         <template v-slot:ui-input>
           <UiInput
-            :value="taskname"
+            :value="editableTasknameValue"
+            state="mini"
             placeholder="Редактировать"
             class="ui-hidden-input"
-            @input="setTaskname($event)"
+            :class="{ mini: !tasknameToggle }"
+            @input="setEditableTasknameValue($event)"
           >
           </UiInput>
         </template>
-        <template v-slot:ui-second-icon>
+
+        <template v-slot:ui-icon>
           <a href="" @click.prevent="restoreTaskname"
             ><UiIcon
               class="icon-close-hidden"
               :src="setIcon(iconClose)"
             ></UiIcon
           ></a>
-        </template>
-        <template v-slot:ui-icon>
-          <a
-            href=""
-            class="icon-ok-hidden"
-            @click.prevent="changeTasknameToggle"
+          <a href="" class="icon-ok-hidden" @click.prevent="setNewTaskname"
             ><UiIcon :src="setIcon(iconOk)"></UiIcon
           ></a>
         </template>
@@ -108,7 +106,7 @@ export default {
   data() {
     return {
       tasknameToggle: true,
-      tasknameValue: [],
+      editableTasknameValue: "",
       values: [1, 2, 3, 5, 8, 13],
       iconThink: require(`assets/img/thinking.svg`),
       iconReady: require(`assets/img/done.svg`),
@@ -125,28 +123,29 @@ export default {
   },
   methods: {
     // могут возвращать и работать с аргументами
+    // eslint-disable-next-line no-unused-vars
+    setEditableTasknameValue(e) {
+      return (this.editableTasknameValue = e);
+    },
     changeTasknameToggle() {
+      this.editableTasknameValue = this.$store.state.taskname;
       this.tasknameToggle = !this.tasknameToggle;
+    },
+    // eslint-disable-next-line no-unused-vars
+    updateEditableTaskname(value) {
+      value = this.editableTasknameValue;
+    },
+    setNewTaskname() {
       if (this.tasknameToggle === false) {
-        this.tasknameValue.push(this.$store.state.taskname);
-      } else {
-        this.tasknameValue.pop();
+        this.setTaskname(this.editableTasknameValue);
       }
+      this.tasknameToggle = !this.tasknameToggle;
     },
     restoreTaskname() {
-      this.setTaskname(this.tasknameValue[0]);
-      this.tasknameValue.pop();
       this.tasknameToggle = !this.tasknameToggle;
     },
     setTaskname(value) {
       this.$store.commit("setTaskname", value);
-    },
-    tasknameHandler() {
-      if (this.tasknameToggle === true) {
-        this.tasknameValue = this.$store.state.taskname;
-      } else {
-        event.preventDefault();
-      }
     },
     changeCurrentUserVote(value) {
       this.$store.commit("changeCurrentUserVote", value);
@@ -197,8 +196,8 @@ export default {
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 78px;
-  left: 228px;
+  top: -82px;
+  left: -35px;
 }
 
 .voting-user,
@@ -209,5 +208,9 @@ export default {
 
 .vote-field {
   margin: 20px 15px;
+}
+
+.mini {
+  padding-right: 85px;
 }
 </style>

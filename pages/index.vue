@@ -7,7 +7,7 @@
 
       <template v-slot:ui-input>
         <UiInput
-          :value="username"
+          state="regular"
           placeholder="Лаврентий"
           class="ui-input"
           @input="
@@ -35,7 +35,7 @@
 
       <template v-slot:ui-input>
         <UiInput
-          :value="taskname"
+          state="regular"
           placeholder="Сложная задачка"
           class="ui-input"
           @input="
