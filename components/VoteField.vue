@@ -32,27 +32,28 @@ export default {
 
 <style scoped>
 .ui-numbers-field {
-  margin: 0;
-  width: 290px;
-  height: 190px;
-  box-sizing: border-box;
-  display: inline-flex;
+  min-width: 290px;
+  display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   align-content: stretch;
   text-align: center;
+  vertical-align: middle;
 }
 
 .ui-numbers-field-inner {
   width: 85px;
   height: 85px;
+  margin-bottom: 10px;
   background-color: #ffffff;
   border: 2px solid #6ac259;
   box-sizing: border-box;
   border-radius: 100%;
   position: relative;
   cursor: pointer;
+  flex: 0 1 auto;
 }
 
 .ui-numbers-field-inner:nth-child(3n) {
@@ -67,7 +68,7 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 32px;
-  line-height: 68px;
+  line-height: 78px;
   vertical-align: top;
 }
 .ui-numbers-field-inner:hover,

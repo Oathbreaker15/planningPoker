@@ -1,8 +1,22 @@
 <template>
   <div class="app">
-    <UiField>
-      <template v-slot:label>
+    <UiField class="ui-field">
+      <template v-slot:ui-label>
         <UiLabel class="ui-label">Как зовут?</UiLabel>
+      </template>
+
+      <template v-slot:ui-error-block>
+        <transition name="slide-fade">
+          <div
+            class="ui-error-block"
+            v-if="isErrorsVisible && (isUsernameEmpty || isTasknameEmpty)"
+          >
+            <p>Заполните все поля!</p>
+          </div>
+          <div class="ui-error-block" v-if="isUserExist">
+            <p>Такой пользователь уже существует!</p>
+          </div>
+        </transition>
       </template>
 
       <template v-slot:ui-input>
@@ -10,26 +24,24 @@
           state="regular"
           placeholder="Лаврентий"
           class="ui-input"
-          @input="
-            setUsername($event);
-            usernameValidationHandler();
-          "
-        ></UiInput>
-      </template>
-
-      <template v-slot:ui-icon>
-        <transition name="slide-fade">
-          <UiIcon
-            v-if="checkUsername"
-            class="ui-icon"
-            :src="errorIcon()"
-          ></UiIcon>
-        </transition>
+          v-model="editableUsernameValue"
+          @input="setUsername($event)"
+        >
+          <template v-slot:ui-icon>
+            <transition name="slide-fade">
+              <UiIcon
+                v-if="isUsernameEmpty && isErrorsVisible"
+                class="ui-icon"
+                :src="errorIcon()"
+              ></UiIcon>
+            </transition>
+          </template>
+        </UiInput>
       </template>
     </UiField>
 
     <UiField>
-      <template v-slot:label>
+      <template v-slot:ui-label>
         <UiLabel class="ui-label">Что оцениваем?</UiLabel>
       </template>
 
@@ -38,30 +50,40 @@
           state="regular"
           placeholder="Сложная задачка"
           class="ui-input"
-          @input="
-            setTaskname($event);
-            tasknameValidationHandler();
-          "
+          v-model="editableTasknameValue"
+          @input="setTaskname($event)"
         >
+          <template v-slot:ui-icon>
+            <transition name="slide-fade">
+              <UiIcon
+                v-if="isTasknameEmpty && isErrorsVisible"
+                class="ui-icon"
+                :src="errorIcon()"
+              ></UiIcon>
+            </transition>
+          </template>
         </UiInput>
-      </template>
-
-      <template v-slot:ui-icon>
-        <transition name="slide-fade">
-          <UiIcon
-            v-if="checkTaskname"
-            class="ui-icon"
-            :src="errorIcon()"
-          ></UiIcon>
-        </transition>
       </template>
     </UiField>
 
-    <nuxt-link to="/voting">
-      <UiButton state="solid" class="ui-button" @click.native="addUser"
+    <nuxt-link to="">
+      <UiButton
+        state="solid"
+        class="ui-button"
+        @click.native="
+          isUserExistToggle();
+          submitForm();
+        "
         >Начать голосование</UiButton
       >
     </nuxt-link>
+    <!-- <div v-for="user in $store.state.users" :key="user.username">
+      {{ user.username }}
+    </div> -->
+    <!-- <div>{{ isUserExist }}</div> -->
+    <!-- <div>{{ usernameDublicateCheck() }}</div> -->
+    <div>{{ allUsers() }}</div>
+    <div>{{ isUsernameExist }}</div>
   </div>
 </template>
 
@@ -88,44 +110,67 @@ export default {
     return {
       iconError: require(`assets/img/error.svg`),
       checkUsername: false,
-      checkTaskname: false
+      checkTaskname: false,
+      editableUsernameValue: "",
+      editableTasknameValue: "",
+      isErrorsVisible: false,
+      isUserExist: false
     };
   },
   computed: {
+    isUsernameEmpty() {
+      return Boolean(!this.editableUsernameValue);
+    },
+    isTasknameEmpty() {
+      return Boolean(!this.editableTasknameValue);
+    },
+    // isUsernameExist() {
+    //   return Boolean(this.usernameDublicateCheck());
+    // },
     ...mapState(["users", "username", "taskname"])
   },
   methods: {
+    allUsers() {
+      return this.$store.getters.allUsers;
+    },
     setUsername(value) {
-      this.$store.commit("setUsername", value);
+      this.editableUsernameValue = value;
+      this.$store.commit("setUsername", this.editableUsernameValue);
     },
     setTaskname(value) {
-      this.$store.commit("setTaskname", value);
+      this.editableTasknameValue = value;
+      this.$store.commit("setTaskname", this.editableTasknameValue);
     },
-    addUser() {
-      if (
-        this.$store.state.username === "" ||
-        this.$store.state.taskname === ""
-      ) {
-        this.usernameValidationHandler();
-        this.tasknameValidationHandler();
-        return event.preventDefault();
+    submitForm() {
+      if (this.isUsernameEmpty || this.isTasknameEmpty || this.isUserExist) {
+        this.isErrorsVisible = true;
+        event.preventDefault();
+        if (this.usernameDublicateCheck()) {
+          this.isUserExist = true;
+          event.preventDefault();
+        }
       } else {
+        this.isErrorsVisible = false;
+
+        this.editableUsernameValue = "";
         this.$store.commit("addUserFromForm");
       }
     },
-    usernameValidationHandler() {
-      if (this.$store.state.username === "") {
-        return (this.checkUsername = true);
+    isUserExistToggle() {
+      if (this.usernameDublicateCheck()) {
+        this.isUserExist = true;
+        event.preventDefault();
       } else {
-        return (this.checkUsername = false);
+        this.isUserExist = false;
       }
     },
-    tasknameValidationHandler() {
-      if (this.$store.state.taskname === "") {
-        return (this.checkTaskname = true);
-      } else {
-        return (this.checkTaskname = false);
-      }
+    usernameDublicateCheck() {
+      const allUsernames = this.$store.getters.allUsers;
+      let exist = allUsernames.find(
+        obj => obj.username === this.editableUsernameValue
+      );
+      // eslint-disable-next-line no-console
+      return Boolean(exist);
     },
     errorIcon() {
       return this.iconError;
@@ -137,26 +182,16 @@ export default {
 <style scoped>
 .app {
   display: block;
-  margin: 0 auto;
-  padding: 0;
+  width: 320px;
+  padding: 20px 15px;
 }
 
-.ui-label {
-  padding: 20px 15px 5px 15px;
+.ui-field {
+  padding-bottom: 20px;
 }
 
 .ui-input {
-  padding: 0px 15px;
-}
-
-.button {
-  margin: 20px 15px;
-}
-
-.ui-icon {
-  position: absolute;
-  top: -92px;
-  left: 0px;
+  margin: 5px 0px;
 }
 
 .slide-fade-enter-active {

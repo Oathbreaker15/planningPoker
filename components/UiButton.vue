@@ -22,17 +22,14 @@ export default {
 .button {
   width: 290px;
   height: 50px;
-  margin: 5px 0;
   border-radius: 5px;
   font-family: Roboto;
   font-style: Regular;
   font-size: 18px;
-  line-height: 21px;
   line-height: 100%;
   text-align: сenter;
   vertical-align: center;
   box-sizing: border-box;
-  /* padding: 20px 15px; */
 }
 
 .button._type-solid {

@@ -1,31 +1,26 @@
 <template>
-  <div>
+  <div class="app">
     <UiField class="ui-field">
       <template v-slot:ui-input>
         <UiInput
           state="regular"
           placeholder="https://www.figma.com/etertrretreetrerteret"
         >
-          <template v-slot:icon>
-            <a href="" @click.prevent=""
-              ><UiIcon :src="require(`assets/img/copy.svg`)"></UiIcon
+          <template v-slot:ui-icon>
+            <a href="" class="copy-icon" @click.prevent=""
+              ><UiIcon :src="iconCopy"></UiIcon
             ></a>
           </template>
         </UiInput>
       </template>
     </UiField>
 
-    <VotingTitle :title="$store.state.taskname">
-      <template v-slot:icon>
-        <a href="" @click.prevent=""
-          ><UiIcon :src="require(`assets/img/edit.svg`)"></UiIcon
-        ></a>
-      </template>
+    <VotingTitle class="voting-title" :title="$store.state.taskname">
     </VotingTitle>
 
     <VotingResults class="vote-field">
       <template v-slot:summary-vote-value>
-        {{ (averageVoteValue.vote / usersWhoVote.length).toFixed(0) }}
+        {{ totalVoteValue }}
       </template>
     </VotingResults>
 
@@ -37,7 +32,7 @@
       :key="user.username"
     >
       <template v-if="user.vote > 0" v-slot:vote>
-        <div class="vote-block" state="vote">
+        <div class="_type-vote" state="vote">
           <span class="vote-value">{{ user.vote }}</span>
         </div>
       </template>
@@ -78,7 +73,18 @@ export default {
     VotingTitle
   },
   data() {
-    return {};
+    return {
+      tasknameToggle: true,
+      editableTasknameValue: "",
+      values: [1, 2, 3, 5, 8, 13],
+      iconThink: require(`assets/img/thinking.svg`),
+      iconReady: require(`assets/img/done.svg`),
+      iconCopy: require(`assets/img/copy.svg`),
+      iconEdit: require(`assets/img/edit.svg`),
+      iconOk: require(`assets/img/ok.svg`),
+      iconClose: require(`assets/img/close.svg`),
+      voteEllipse: require(`assets/img/voteEllipse.svg`)
+    };
   },
   computed: {
     allUsers() {
@@ -89,42 +95,41 @@ export default {
     },
     usersWhoVote() {
       return this.$store.getters.usersWhoVote;
+    },
+    totalVoteValue() {
+      if (this.usersWhoVote.length === 0) {
+        return 0;
+      }
+      return (this.averageVoteValue.vote / this.usersWhoVote.length).toFixed(0);
     }
   }
 };
 </script>
 
 <style scoped>
-.ui-field {
+.app {
+  display: block;
+  width: 320px;
   padding: 20px 15px;
 }
 
+.ui-field {
+  padding-bottom: 20px;
+}
+
+/* .ui-input {
+  padding: 5px 15px;
+  margin-left: 40px;
+} */
+
+.voting-title,
 .voting-user,
 .helping-text,
 .button {
-  margin: 5px 15px;
+  margin: 5px 0;
 }
 
 .vote-field {
   margin: 20px 15px;
-}
-
-.vote-block {
-  position: absolute;
-  top: 5px;
-  left: 0px;
-  width: 38px;
-  height: 38px;
-  background-color: #6ac259;
-  color: #fff;
-  border-radius: 100%;
-}
-
-.vote-value {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>

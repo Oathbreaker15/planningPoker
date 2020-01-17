@@ -2,7 +2,7 @@
 export default {
   props: {
     imgPath: {
-      type: Function
+      type: String
     }
   }
 };
@@ -12,4 +12,9 @@ export default {
   <img class="link" :src="imgPath" />
 </template>
 
-<style scoped></style>
+<style scoped>
+/* .link {
+  width: 38px;
+  height: 38px;
+} */
+</style>

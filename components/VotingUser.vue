@@ -28,35 +28,28 @@ export default {
 
 <style scoped>
 .ui-voting-user-field {
-  padding: 5px;
-  width: 290px;
-  height: 50px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   font-family: Roboto;
   font-size: 18px;
-  line-height: 50px;
   display: flex;
-  align-items: center;
   position: relative;
-  box-sizing: border-box;
+  align-items: center;
+
+  /* box-sizing: border-box; */
 }
 
 .username {
-  position: absolute;
-  top: 0px;
-  left: 45px;
+  margin-left: 10px;
+  word-break: break-word;
 }
 
-.icon._type-icon {
-  position: absolute;
-  top: 5px;
-  left: 0px;
-}
+/* .icon._type-icon {
+} */
 
-.vote._type-vote {
-  position: absolute;
-  top: 5px;
-  left: 0px;
+._type-vote {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 38px;
   height: 38px;
   background-color: #6ac259;

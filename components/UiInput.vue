@@ -29,33 +29,49 @@ export default {
       :placeholder="placeholder"
       :class="'_type-' + state"
     />
+    <div class="ui-icon">
+      <slot name="ui-icon"></slot>
+    </div>
   </div>
 </template>
 
 <style scoped>
-._type-regular,
-._type-mini {
-  width: 290px;
+.ui-input {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
   height: 50px;
-  padding-left: 15px;
-  padding-right: 45px;
   border-radius: 5px;
   border: 2px solid #e5e5e5;
+}
+
+._type-regular,
+._type-mini {
+  width: 100%;
+  /* height: 50px; */
+  padding: 0 15px;
+  /* border-radius: 5px; */
+  border: 0px solid #e5e5e5;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
-  line-height: 21px;
-  display: flex;
-  align-items: center;
+  /* line-height: 21px; */
   text-overflow: ellipsis;
+  outline: none;
 }
 
-.ui-input {
-  display: inline-block;
-  position: relative;
+.ui-input:focus-within {
+  border-color: #4d90fe;
 }
 
+.ui-icon {
+  align-self: center;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  margin-right: 5px;
+  background-size: cover;
+}
 ._type-mini {
   padding-right: 85px;
 }

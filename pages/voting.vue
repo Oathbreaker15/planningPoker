@@ -6,12 +6,12 @@
           state="regular"
           placeholder="https://www.figma.com/etertrretreetrerteret"
         >
+          <template v-slot:ui-icon>
+            <a href="" class="copy-icon" @click.prevent=""
+              ><UiIcon :src="setIcon(iconCopy)"></UiIcon
+            ></a>
+          </template>
         </UiInput>
-      </template>
-      <template v-slot:ui-icon>
-        <a href="" class="copy-icon" @click.prevent=""
-          ><UiIcon :src="setIcon(iconCopy)"></UiIcon
-        ></a>
       </template>
     </UiField>
 
@@ -21,7 +21,7 @@
       class="ui-title"
     >
       <template v-slot:icon>
-        <a href="" @click.prevent="changeTasknameToggle"
+        <a class="icon" href="" @click.prevent="changeTasknameToggle"
           ><UiIcon :src="setIcon(iconEdit)"></UiIcon
         ></a>
       </template>
@@ -32,25 +32,21 @@
         <template v-slot:ui-input>
           <UiInput
             :value="editableTasknameValue"
-            state="mini"
+            state="regular"
             placeholder="Редактировать"
             class="ui-hidden-input"
             :class="{ mini: !tasknameToggle }"
             @input="setEditableTasknameValue($event)"
           >
+            <template v-slot:ui-icon>
+              <a href="" @click.prevent="restoreTaskname"
+                ><UiIcon class="icon-close-hidden" :src="iconClose"></UiIcon
+              ></a>
+              <a href="" class="icon-ok-hidden" @click.prevent="setNewTaskname"
+                ><UiIcon :src="iconOk"></UiIcon
+              ></a>
+            </template>
           </UiInput>
-        </template>
-
-        <template v-slot:ui-icon>
-          <a href="" @click.prevent="restoreTaskname"
-            ><UiIcon
-              class="icon-close-hidden"
-              :src="setIcon(iconClose)"
-            ></UiIcon
-          ></a>
-          <a href="" class="icon-ok-hidden" @click.prevent="setNewTaskname"
-            ><UiIcon :src="setIcon(iconOk)"></UiIcon
-          ></a>
         </template>
       </UiField>
     </template>
@@ -79,7 +75,7 @@
     </VotingUser>
 
     <nuxt-link to="/results">
-      <UiButton state="solid">Завершить</UiButton>
+      <UiButton state="solid" class="ui-button">Завершить</UiButton>
     </nuxt-link>
   </div>
 </template>
@@ -125,7 +121,7 @@ export default {
     // могут возвращать и работать с аргументами
     // eslint-disable-next-line no-unused-vars
     setEditableTasknameValue(e) {
-      return (this.editableTasknameValue = e);
+      this.editableTasknameValue = e;
     },
     changeTasknameToggle() {
       this.editableTasknameValue = this.$store.state.taskname;
@@ -165,52 +161,34 @@ export default {
 </script>
 
 <style scoped>
-.ui-field {
+.app {
+  display: block;
+  width: 320px;
   padding: 20px 15px;
 }
 
-.ui-title {
-  padding: 0 15px;
-}
-.ui-hidden-input {
-  width: 290px;
-  padding: 0 15px;
-  position: absolute;
-  top: 68px;
-  left: 0;
-}
-
-.copy-icon {
-  position: absolute;
-  top: -89px;
-  left: 0px;
-}
-
-.icon-ok-hidden {
-  position: absolute;
-  top: -84px;
-  left: 0px;
-}
-
 .icon-close-hidden {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: -82px;
-  left: -35px;
+  width: 32px;
+}
+
+.ui-title {
+  margin-top: 20px;
 }
 
 .voting-user,
-.helping-text,
-.button {
-  margin: 5px 15px;
+.helping-text {
+  margin-bottom: 10px;
+}
+
+/* .ui-hidden-input {
+} */
+
+.ui-button {
+  margin-top: 10px;
 }
 
 .vote-field {
-  margin: 20px 15px;
-}
-
-.mini {
-  padding-right: 85px;
+  padding-top: 20px;
+  margin: 20px 0px;
 }
 </style>

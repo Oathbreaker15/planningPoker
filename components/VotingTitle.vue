@@ -23,26 +23,20 @@ export default {
 <style scoped>
 .voting-title {
   display: flex;
-  width: 290px;
-  padding-left: 15px;
-  padding-right: 45px;
+  position: relative;
+  align-items: center;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
-  line-height: 18px;
-  position: relative;
-  word-wrap: break-word;
 }
 
-.voting-title {
-  width: 290px;
-  word-wrap: break-word;
+.voting-name {
+  word-break: break-word;
 }
 
 .icon {
-  width: 15px;
   height: 15px;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 </style>

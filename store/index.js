@@ -41,6 +41,10 @@ const store = () =>
       }
     },
     getters: {
+      allUsers: state => {
+        const allUsers = state.users;
+        return allUsers;
+      },
       currentUser: state => {
         const currentUser = state.users.find(
           user => user.username == state.username
@@ -62,7 +66,5 @@ const store = () =>
       }
     }
   });
-
-// 3. Сделать среднее значение
 
 export default store;
