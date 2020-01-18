@@ -77,6 +77,8 @@
     <nuxt-link to="/results">
       <UiButton state="solid" class="ui-button">Завершить</UiButton>
     </nuxt-link>
+
+    <div>{{ $store.state.users }}</div>
   </div>
 </template>
 
@@ -88,6 +90,7 @@ import UiIcon from "~/components/UiIcon.vue";
 import VoteField from "~/components/VoteField.vue";
 import VotingUser from "~/components/VotingUser.vue";
 import VotingTitle from "~/components/VotingTitle.vue";
+import iconThink from "~/assets/img/thinking.svg";
 
 export default {
   components: {
@@ -104,7 +107,7 @@ export default {
       tasknameToggle: true,
       editableTasknameValue: "",
       values: [1, 2, 3, 5, 8, 13],
-      iconThink: require(`assets/img/thinking.svg`),
+      iconThink,
       iconReady: require(`assets/img/done.svg`),
       iconCopy: require(`assets/img/copy.svg`),
       iconEdit: require(`assets/img/edit.svg`),

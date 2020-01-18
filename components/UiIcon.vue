@@ -12,9 +12,4 @@ export default {
   <img class="link" :src="imgPath" />
 </template>
 
-<style scoped>
-/* .link {
-  width: 38px;
-  height: 38px;
-} */
-</style>
+<style scoped></style>

@@ -5,12 +5,9 @@
         <UiLabel class="ui-label">Как зовут?</UiLabel>
       </template>
 
-      <template v-slot:ui-error-block>
+      <template v-if="formHasBeenSubmited" v-slot:ui-error-block>
         <transition name="slide-fade">
-          <div
-            class="ui-error-block"
-            v-if="isErrorsVisible && (isUsernameEmpty || isTasknameEmpty)"
-          >
+          <div class="ui-error-block" v-if="isUsernameEmpty || isTasknameEmpty">
             <p>Заполните все поля!</p>
           </div>
           <div class="ui-error-block" v-if="isUserExist">
@@ -24,13 +21,13 @@
           state="regular"
           placeholder="Лаврентий"
           class="ui-input"
-          v-model="editableUsernameValue"
+          :value="editableUsernameValue"
           @input="setUsername($event)"
         >
           <template v-slot:ui-icon>
             <transition name="slide-fade">
               <UiIcon
-                v-if="isUsernameEmpty && isErrorsVisible"
+                v-if="isUsernameEmpty && formHasBeenSubmited"
                 class="ui-icon"
                 :src="errorIcon()"
               ></UiIcon>
@@ -50,13 +47,13 @@
           state="regular"
           placeholder="Сложная задачка"
           class="ui-input"
-          v-model="editableTasknameValue"
+          :value="editableTasknameValue"
           @input="setTaskname($event)"
         >
           <template v-slot:ui-icon>
             <transition name="slide-fade">
               <UiIcon
-                v-if="isTasknameEmpty && isErrorsVisible"
+                v-if="isTasknameEmpty && formHasBeenSubmited"
                 class="ui-icon"
                 :src="errorIcon()"
               ></UiIcon>
@@ -66,24 +63,9 @@
       </template>
     </UiField>
 
-    <nuxt-link to="">
-      <UiButton
-        state="solid"
-        class="ui-button"
-        @click.native="
-          isUserExistToggle();
-          submitForm();
-        "
-        >Начать голосование</UiButton
-      >
-    </nuxt-link>
-    <!-- <div v-for="user in $store.state.users" :key="user.username">
-      {{ user.username }}
-    </div> -->
-    <!-- <div>{{ isUserExist }}</div> -->
-    <!-- <div>{{ usernameDublicateCheck() }}</div> -->
-    <div>{{ allUsers() }}</div>
-    <div>{{ isUsernameExist }}</div>
+    <UiButton state="solid" class="ui-button" @click.native="submitForm"
+      >Начать голосование</UiButton
+    >
   </div>
 </template>
 
@@ -109,11 +91,9 @@ export default {
   data() {
     return {
       iconError: require(`assets/img/error.svg`),
-      checkUsername: false,
-      checkTaskname: false,
       editableUsernameValue: "",
       editableTasknameValue: "",
-      isErrorsVisible: false,
+      formHasBeenSubmited: false,
       isUserExist: false
     };
   },
@@ -124,15 +104,9 @@ export default {
     isTasknameEmpty() {
       return Boolean(!this.editableTasknameValue);
     },
-    // isUsernameExist() {
-    //   return Boolean(this.usernameDublicateCheck());
-    // },
     ...mapState(["users", "username", "taskname"])
   },
   methods: {
-    allUsers() {
-      return this.$store.getters.allUsers;
-    },
     setUsername(value) {
       this.editableUsernameValue = value;
       this.$store.commit("setUsername", this.editableUsernameValue);
@@ -142,35 +116,23 @@ export default {
       this.$store.commit("setTaskname", this.editableTasknameValue);
     },
     submitForm() {
-      if (this.isUsernameEmpty || this.isTasknameEmpty || this.isUserExist) {
-        this.isErrorsVisible = true;
-        event.preventDefault();
-        if (this.usernameDublicateCheck()) {
-          this.isUserExist = true;
-          event.preventDefault();
-        }
-      } else {
-        this.isErrorsVisible = false;
-
-        this.editableUsernameValue = "";
-        this.$store.commit("addUserFromForm");
+      const usernameExists = this.usernameExists();
+      this.isUserExist = usernameExists;
+      this.formHasBeenSubmited = true;
+      if (this.isUsernameEmpty || this.isTasknameEmpty || usernameExists) {
+        return;
       }
+      this.editableUsernameValue = "";
+      this.$store.commit("addUserFromForm");
+      this.formHasBeenSubmited = false;
+      this.$router.push("/voting");
     },
-    isUserExistToggle() {
-      if (this.usernameDublicateCheck()) {
-        this.isUserExist = true;
-        event.preventDefault();
-      } else {
-        this.isUserExist = false;
-      }
-    },
-    usernameDublicateCheck() {
-      const allUsernames = this.$store.getters.allUsers;
-      let exist = allUsernames.find(
+    usernameExists() {
+      const allUsers = this.$store.state.users;
+      const user = allUsers.find(
         obj => obj.username === this.editableUsernameValue
       );
-      // eslint-disable-next-line no-console
-      return Boolean(exist);
+      return Boolean(user);
     },
     errorIcon() {
       return this.iconError;
