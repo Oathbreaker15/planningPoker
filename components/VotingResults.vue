@@ -18,7 +18,6 @@ export default {};
 <style scoped>
 .summary__outer {
   display: inline-block;
-  width: 290px;
   text-align: center;
 }
 

@@ -3,8 +3,7 @@
     <UiField class="ui-field">
       <template v-slot:ui-input>
         <UiInput
-          state="regular"
-          placeholder="https://www.figma.com/etertrretreetrerteret"
+          placeholder="https://www.figma.com/file/86sSkC58o9bFTbhyvs7kHR/Agile-Storypoints?node-id=1%3A25"
         >
           <template v-slot:ui-icon>
             <a href="" class="copy-icon" @click.prevent=""
@@ -37,19 +36,17 @@
         </div>
       </template>
       <template v-else v-slot:icon>
-        <UiIcon state="icon" :src="require(`assets/img/thinking.svg`)"></UiIcon>
+        <UiIcon state="icon" :src="iconThink"></UiIcon>
       </template>
 
       <div slot="username">{{ user.username }}</div>
     </VotingUser>
 
-    <nuxt-link to="/voting">
-      <UiButton state="bordered">Переоценить эту</UiButton> </nuxt-link
-    ><br />
+    <UiButton state="bordered" @click.native="toVoting()"
+      >Переоценить эту</UiButton
+    >
 
-    <nuxt-link to="/">
-      <UiButton state="solid">Оценить другую</UiButton>
-    </nuxt-link>
+    <UiButton state="solid" @click.native="toStart()">Оценить другую</UiButton>
   </div>
 </template>
 
@@ -61,6 +58,13 @@ import UiIcon from "~/components/UiIcon.vue";
 import VotingResults from "~/components/VotingResults.vue";
 import VotingUser from "~/components/VotingUser.vue";
 import VotingTitle from "~/components/VotingTitle.vue";
+import iconThink from "~/assets/img/thinking.svg";
+import iconReady from "~/assets/img/done.svg";
+import iconCopy from "~/assets/img/copy.svg";
+import iconEdit from "~/assets/img/edit.svg";
+import iconOk from "~/assets/img/ok.svg";
+import iconClose from "~/assets/img/close.svg";
+import voteEllipse from "~/assets/img/voteEllipse.svg";
 
 export default {
   components: {
@@ -77,19 +81,16 @@ export default {
       tasknameToggle: true,
       editableTasknameValue: "",
       values: [1, 2, 3, 5, 8, 13],
-      iconThink: require(`assets/img/thinking.svg`),
-      iconReady: require(`assets/img/done.svg`),
-      iconCopy: require(`assets/img/copy.svg`),
-      iconEdit: require(`assets/img/edit.svg`),
-      iconOk: require(`assets/img/ok.svg`),
-      iconClose: require(`assets/img/close.svg`),
-      voteEllipse: require(`assets/img/voteEllipse.svg`)
+      iconThink,
+      iconReady,
+      iconCopy,
+      iconEdit,
+      iconOk,
+      iconClose,
+      voteEllipse
     };
   },
   computed: {
-    allUsers() {
-      return this.$store.getters.allUsers;
-    },
     averageVoteValue() {
       return this.$store.getters.averageVoteValue;
     },
@@ -102,14 +103,43 @@ export default {
       }
       return (this.averageVoteValue.vote / this.usersWhoVote.length).toFixed(0);
     }
+  },
+  methods: {
+    toStart() {
+      this.$router.push("/");
+    },
+    toVoting() {
+      this.$router.push("/voting");
+    }
   }
 };
 </script>
 
 <style scoped>
+@media (min-width: 767px) {
+  .app {
+    width: 768px;
+    margin: 0 auto;
+  }
+
+  .button {
+    width: 290px;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 320px) {
+  .button {
+    width: 290px;
+  }
+
+  .vote-field .summary {
+    width: 85px;
+    height: 85px;
+  }
+}
+
 .app {
   display: block;
-  width: 320px;
   padding: 20px 15px;
 }
 
@@ -117,19 +147,22 @@ export default {
   padding-bottom: 20px;
 }
 
-/* .ui-input {
-  padding: 5px 15px;
-  margin-left: 40px;
-} */
-
 .voting-title,
 .voting-user,
-.helping-text,
-.button {
+.helping-text {
   margin: 5px 0;
 }
 
+.button {
+  display: block;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
 .vote-field {
-  margin: 20px 15px;
+  width: 185px;
+  height: 185px;
+  display: block;
+  margin: 0 auto;
 }
 </style>

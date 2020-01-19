@@ -28,23 +28,17 @@ export default {
 
 <style scoped>
 .ui-voting-user-field {
-  /* border-radius: 5px; */
   font-family: Roboto;
   font-size: 18px;
   display: flex;
   position: relative;
   align-items: center;
-
-  /* box-sizing: border-box; */
 }
 
 .username {
   margin-left: 10px;
   word-break: break-word;
 }
-
-/* .icon._type-icon {
-} */
 
 ._type-vote {
   display: flex;

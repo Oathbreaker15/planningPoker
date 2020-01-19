@@ -19,7 +19,6 @@ const store = () =>
       },
       addUser(state, name) {
         state.users.push({ username: name, vote: 0 });
-        // Vue.set(state.users, 0, name);
       },
       addUserFromForm(state) {
         const name = state.username;

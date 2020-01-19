@@ -32,7 +32,6 @@ export default {
 
 <style scoped>
 .ui-numbers-field {
-  min-width: 290px;
   display: flex;
   position: relative;
   justify-content: space-between;

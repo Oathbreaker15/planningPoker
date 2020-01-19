@@ -1,5 +1,3 @@
-<!-- Крайне простое приложение, чтобы командой оценивать задачи (по agile) -->
-
 <template>
   <div class="app">
     <UiField class="ui-field">
@@ -20,7 +18,6 @@
 
       <template v-slot:ui-input>
         <UiInput
-          state="regular"
           placeholder="Лаврентий"
           class="ui-input"
           :value="editableUsernameValue"
@@ -31,7 +28,7 @@
               <UiIcon
                 v-if="isUsernameEmpty && formHasBeenSubmited"
                 class="ui-icon"
-                :src="errorIcon()"
+                :src="iconError"
               ></UiIcon>
             </transition>
           </template>
@@ -46,7 +43,6 @@
 
       <template v-slot:ui-input>
         <UiInput
-          state="regular"
           placeholder="Сложная задачка"
           class="ui-input"
           :value="editableTasknameValue"
@@ -57,7 +53,7 @@
               <UiIcon
                 v-if="isTasknameEmpty && formHasBeenSubmited"
                 class="ui-icon"
-                :src="errorIcon()"
+                :src="iconError"
               ></UiIcon>
             </transition>
           </template>
@@ -78,9 +74,7 @@ import UiInput from "~/components/UiInput.vue";
 import UiLabel from "~/components/UiLabel.vue";
 import UiIcon from "~/components/UiIcon.vue";
 import { mapState } from "vuex";
-import Vue from "vue";
-import Vuelidate from "vuelidate";
-Vue.use(Vuelidate);
+import iconError from "~/assets/img/error.svg";
 
 export default {
   components: {
@@ -88,11 +82,12 @@ export default {
     UiButton,
     UiInput,
     UiLabel,
-    UiIcon
+    UiIcon,
+    iconError
   },
   data() {
     return {
-      iconError: require(`assets/img/error.svg`),
+      iconError,
       editableUsernameValue: "",
       editableTasknameValue: "",
       formHasBeenSubmited: false,
@@ -135,19 +130,29 @@ export default {
         obj => obj.username === this.editableUsernameValue
       );
       return Boolean(user);
-    },
-    errorIcon() {
-      return this.iconError;
     }
   }
 };
 </script>
 
 <style scoped>
+@media screen and (min-width: 767px) {
+  .app {
+    width: 768px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 320px) {
+  .button {
+    width: 290px;
+  }
+}
+
 .app {
   display: block;
-  width: 320px;
   padding: 20px 15px;
+  text-align: center;
 }
 
 .ui-field {

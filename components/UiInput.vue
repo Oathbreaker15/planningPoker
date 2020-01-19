@@ -6,9 +6,6 @@ export default {
     },
     placeholder: {
       type: String
-    },
-    state: {
-      type: String
     }
   },
   methods: {
@@ -27,7 +24,7 @@ export default {
       @input="emitInput"
       @keyup.enter="emitInput"
       :placeholder="placeholder"
-      :class="'_type-' + state"
+      class="ui-input-inner"
     />
     <div class="ui-icon">
       <slot name="ui-icon"></slot>
@@ -45,18 +42,14 @@ export default {
   border: 2px solid #e5e5e5;
 }
 
-._type-regular,
-._type-mini {
+.ui-input-inner {
   width: 100%;
-  /* height: 50px; */
   padding: 0 15px;
-  /* border-radius: 5px; */
   border: 0px solid #e5e5e5;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
-  /* line-height: 21px; */
   text-overflow: ellipsis;
   outline: none;
 }
@@ -71,11 +64,5 @@ export default {
   margin-top: 2px;
   margin-right: 5px;
   background-size: cover;
-}
-._type-mini {
-  padding-right: 85px;
-}
-._type-error {
-  border: 1px solid red;
 }
 </style>

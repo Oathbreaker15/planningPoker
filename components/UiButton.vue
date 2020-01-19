@@ -20,15 +20,11 @@ export default {
 
 <style scoped>
 .button {
-  width: 290px;
   height: 50px;
   border-radius: 5px;
   font-family: Roboto;
-  font-style: Regular;
   font-size: 18px;
   line-height: 100%;
-  text-align: сenter;
-  vertical-align: center;
   box-sizing: border-box;
 }
 

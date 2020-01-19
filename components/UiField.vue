@@ -28,14 +28,15 @@ export default {
 <style scoped>
 .ui-field {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-content: center;
-  align-items: center;
+  /* align-content: center;
+  align-items: center; */
 }
 
 .ui-label {
+  align-self: flex-start;
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;

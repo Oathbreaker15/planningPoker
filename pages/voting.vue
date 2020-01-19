@@ -3,12 +3,11 @@
     <UiField class="ui-field">
       <template v-slot:ui-input>
         <UiInput
-          state="regular"
-          placeholder="https://www.figma.com/etertrretreetrerteret"
+          placeholder="https://www.figma.com/file/86sSkC58o9bFTbhyvs7kHR/Agile-Storypoints?node-id=1%3A25"
         >
           <template v-slot:ui-icon>
             <a href="" class="copy-icon" @click.prevent=""
-              ><UiIcon :src="setIcon(iconCopy)"></UiIcon
+              ><UiIcon :src="iconCopy"></UiIcon
             ></a>
           </template>
         </UiInput>
@@ -22,7 +21,7 @@
     >
       <template v-slot:icon>
         <a class="icon" href="" @click.prevent="changeTasknameToggle"
-          ><UiIcon :src="setIcon(iconEdit)"></UiIcon
+          ><UiIcon :src="iconEdit"></UiIcon
         ></a>
       </template>
     </VotingTitle>
@@ -32,10 +31,8 @@
         <template v-slot:ui-input>
           <UiInput
             :value="editableTasknameValue"
-            state="regular"
             placeholder="Редактировать"
             class="ui-hidden-input"
-            :class="{ mini: !tasknameToggle }"
             @input="setEditableTasknameValue($event)"
           >
             <template v-slot:ui-icon>
@@ -66,7 +63,7 @@
       :key="user.username"
     >
       <template v-slot:icon>
-        <UiIcon state="icon" :src="userIcon(user.vote)" slot="icon"></UiIcon>
+        <UiIcon :src="userIconToggle(user.vote)" slot="icon"></UiIcon>
       </template>
 
       <template v-slot:username>
@@ -74,11 +71,9 @@
       </template>
     </VotingUser>
 
-    <nuxt-link to="/results">
-      <UiButton state="solid" class="ui-button">Завершить</UiButton>
-    </nuxt-link>
-
-    <div>{{ $store.state.users }}</div>
+    <UiButton state="solid" class="ui-button" @click.native="toResults()"
+      >Завершить</UiButton
+    >
   </div>
 </template>
 
@@ -91,6 +86,11 @@ import VoteField from "~/components/VoteField.vue";
 import VotingUser from "~/components/VotingUser.vue";
 import VotingTitle from "~/components/VotingTitle.vue";
 import iconThink from "~/assets/img/thinking.svg";
+import iconReady from "~/assets/img/done.svg";
+import iconCopy from "~/assets/img/copy.svg";
+import iconEdit from "~/assets/img/edit.svg";
+import iconOk from "~/assets/img/ok.svg";
+import iconClose from "~/assets/img/close.svg";
 
 export default {
   components: {
@@ -108,11 +108,11 @@ export default {
       editableTasknameValue: "",
       values: [1, 2, 3, 5, 8, 13],
       iconThink,
-      iconReady: require(`assets/img/done.svg`),
-      iconCopy: require(`assets/img/copy.svg`),
-      iconEdit: require(`assets/img/edit.svg`),
-      iconOk: require(`assets/img/ok.svg`),
-      iconClose: require(`assets/img/close.svg`)
+      iconReady,
+      iconCopy,
+      iconEdit,
+      iconOk,
+      iconClose
     };
   },
   computed: {
@@ -122,7 +122,9 @@ export default {
   },
   methods: {
     // могут возвращать и работать с аргументами
-    // eslint-disable-next-line no-unused-vars
+    toResults() {
+      this.$router.push("/results");
+    },
     setEditableTasknameValue(e) {
       this.editableTasknameValue = e;
     },
@@ -149,7 +151,7 @@ export default {
     changeCurrentUserVote(value) {
       this.$store.commit("changeCurrentUserVote", value);
     },
-    userIcon(value) {
+    userIconToggle(value) {
       if (value === 0) {
         return this.iconThink;
       } else {
@@ -164,9 +166,21 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 767px) {
+  .app {
+    width: 768px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 320px) {
+  .button {
+    width: 290px;
+  }
+}
+
 .app {
   display: block;
-  width: 320px;
   padding: 20px 15px;
 }
 
@@ -183,15 +197,14 @@ export default {
   margin-bottom: 10px;
 }
 
-/* .ui-hidden-input {
-} */
-
 .ui-button {
+  display: block;
+  margin: 0 auto;
   margin-top: 10px;
 }
 
 .vote-field {
+  width: 100%;
   padding-top: 20px;
-  margin: 20px 0px;
 }
 </style>
