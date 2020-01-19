@@ -1,3 +1,5 @@
+<!-- Крайне простое приложение, чтобы командой оценивать задачи (по agile) -->
+
 <template>
   <div class="app">
     <UiField class="ui-field">
